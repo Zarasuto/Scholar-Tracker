@@ -1,5 +1,5 @@
 import re
-def check_ronin_address(address):
+def is_valid_address(address):
     pattern = re.compile("\Aronin:(.+)")
     if(bool(pattern.search(address)) and len(address[6:])==40):
         return True

@@ -12,6 +12,6 @@ async def on_ready():
 async def ping(ctx):
     await ctx.send(f"Ping : {round(client.latency * 1000)}ms ")
 
-client.load_extension('commands')
+client.load_extension('commands.scholar_status')
 
 client.run("ODcyMTk4MDY4MjkwODc5NTU4.YQmXwA.q5ckFJLRLRKWIB2EHNkOdLeWDsI")

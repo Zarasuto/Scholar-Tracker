@@ -1,0 +1,8 @@
+Create a command for adding, editing and deleting scholars
+    = Add Scholar command
+    = Delete Scholar command
+    = Edit Cut % command
+
+Add a command for leaderboard top earnings
+Add a command prize pool checker
+Add a command to get the current battle data <- WE NEED TO GET BATTLE DATA API

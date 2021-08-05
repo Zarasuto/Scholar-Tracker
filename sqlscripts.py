@@ -1,8 +1,8 @@
 import sqlite3
 from utility.checkaddress import is_valid_address
-
+database = 'scholars.db'
 def add_scholar(name,address,cut):
-    conn = sqlite3.connect('scholars.db')
+    conn = sqlite3.connect(database)
     c = conn.cursor()
     c.execute("INSERT INTO scholars VALUES(?,?,?)",(name,address,cut))
     conn.commit()
@@ -12,7 +12,7 @@ def edit_scholar(name):
     pass 
 
 def get_scholar_data(target):
-    conn = sqlite3.connect('scholars.db')
+    conn = sqlite3.connect(database)
     c = conn.cursor()
     if(is_valid_address(target)):
         c.execute(f"SELECT * FROM scholars WHERE address='{target}'")
@@ -23,7 +23,7 @@ def get_scholar_data(target):
     return data
 
 def get_all_scholar_data():
-    conn = sqlite3.connect('scholars.db')
+    conn = sqlite3.connect(database)
     c = conn.cursor()
     c.execute("SELECT * FROM scholars")
     data = c.fetchall()
@@ -31,14 +31,14 @@ def get_all_scholar_data():
     return data
 
 def delete_scholar(address):
-    conn = sqlite3.connect('scholars.db')
+    conn = sqlite3.connect(database)
     c = conn.cursor()
     c.execute("DELETE FROM scholars WHERE address= ?",(address))
     conn.commit()
     conn.close()
 
 def edit_cut(target,change):
-    conn = sqlite3.connect('scholars.db')
+    conn = sqlite3.connect(database)
     c = conn.cursor()
     if(is_valid_address(target)):
         c.execute(f" UPDATE scholars SET cut = ? WHERE address = '{target}'", (change,))

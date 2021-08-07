@@ -1,6 +1,10 @@
 import sqlite3
 from utility.checkaddress import is_valid_address
 database = 'scholars.db'
+
+class QueryError(Exception):
+    pass
+
 def add_scholar(name,address,cut):
     conn = sqlite3.connect(database)
     c = conn.cursor()
@@ -8,9 +12,6 @@ def add_scholar(name,address,cut):
     conn.commit()
     conn.close()
     
-def edit_scholar(name):
-    pass 
-
 def get_scholar_data(target):
     conn = sqlite3.connect(database)
     c = conn.cursor()
@@ -33,7 +34,12 @@ def get_all_scholar_data():
 def delete_scholar(address):
     conn = sqlite3.connect(database)
     c = conn.cursor()
-    c.execute("DELETE FROM scholars WHERE address= ?",(address))
+    if(is_valid_address(address)):
+        c.execute("DELETE FROM scholars WHERE address= ?",(address,))
+    else:
+        c.execute("DELETE FROM scholars WHERE name= ?",(address,))
+    if(c.rowcount<1):
+        raise QueryError("Query operation is not successful")
     conn.commit()
     conn.close()
 
@@ -44,5 +50,18 @@ def edit_cut(target,change):
         c.execute(f" UPDATE scholars SET cut = ? WHERE address = '{target}'", (change,))
     else:
         c.execute(f" UPDATE scholars SET cut = ? WHERE name = '{target}'", (change,))
+    if(c.rowcount<1):
+        raise QueryError("Query operation is not successful")
     conn.commit()
     conn.close()
+
+def edit_name(target,name):
+    conn = sqlite3.connect(database)
+    c = conn.cursor()
+    if(is_valid_address(target)):
+        c.execute(f" UPDATE scholars SET name = ? WHERE address = ?", (name,target))   
+    if(c.rowcount<1):
+        raise QueryError("Query operation is not successful")
+    conn.commit()
+    conn.close()
+

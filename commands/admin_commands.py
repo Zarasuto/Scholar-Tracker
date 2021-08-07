@@ -12,7 +12,7 @@ class AdminCommands(commands.Cog):
     def __init__(self,client):
         self.client=client
 
-    @commands.command()
+    @commands.command(brief= "Add Scholars")
     @commands.has_permissions(administrator=True)
     async def add_scholar(self,ctx,mention,address,cut):
         try:
@@ -27,7 +27,7 @@ class AdminCommands(commands.Cog):
         except TypeError:
             await ctx.send("Incorrect input")
   
-    @commands.command()
+    @commands.command(brief = "Shows the data of a scholar either by a mention or via an address")
     @commands.has_permissions(administrator=True)
     async def scholar_data(self,ctx,target):
         temp=target
@@ -50,7 +50,7 @@ class AdminCommands(commands.Cog):
 
         await ctx.send(embed=embed_data)
 
-    @commands.command()
+    @commands.command(brief = "Shows all scholar data")
     @commands.has_permissions(administrator=True)
     async def all_scholar_data(self,ctx):
         sql_scholar_data = sqlscripts.get_all_scholar_data()
@@ -67,7 +67,7 @@ class AdminCommands(commands.Cog):
             
         await ctx.send(embed=embed_data)
     
-    @commands.command()
+    @commands.command(brief = "Delete a scholar via their address")
     @commands.has_permissions(administrator=True)
     async def delete_scholar(self,ctx,address):
         try:
@@ -78,7 +78,7 @@ class AdminCommands(commands.Cog):
         except Exception:
             traceback.print_exc()
 
-    @commands.command()
+    @commands.command(brief = "Edits the cut percentage of a scholar either by address or a mention")
     @commands.has_permissions(administrator=True)
     async def edit_cut(self,ctx,target,change):
         temp=target
@@ -100,7 +100,7 @@ class AdminCommands(commands.Cog):
         except Exception:
             traceback.print_exc()
 
-    @commands.command()
+    @commands.command(brief = "Edits the name of the scholar via address")
     @commands.has_permissions(administrator=True)
     async def edit_name(self,ctx,address,name):
         try:

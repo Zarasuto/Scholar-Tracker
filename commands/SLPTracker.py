@@ -8,7 +8,7 @@ class track_slp(commands.Cog):
     def __init__(self,client):
         self.client=client
 
-    @commands.command()
+    @commands.command(brief = "Checks the current price of SLP")
     async def price(self,ctx):
         data=get_slp_data()
         dt_object = datetime.fromtimestamp(int(data["smooth-love-potion"]['last_updated_at']))

@@ -13,7 +13,7 @@ class ScholarStatus(commands.Cog):
     def __init__(self,client):
         self.client=client
 
-    @commands.command()
+    @commands.command(brief= "Shows the current earnings of a scholar")
     #add commands.has_any_role
     async def status(self,ctx):
         sql_scholar_data = sqlscripts.get_scholar_data(str(ctx.author)) #try to get data of the author
@@ -43,7 +43,7 @@ class ScholarStatus(commands.Cog):
         
         await ctx.send(embed=embeds)
 
-    @commands.command()
+    @commands.command(brief = "Shows the current mmr of the scholar", description = " Shows the current mmr of the scholar, it can also display the mmr of fellow scholars using his/her address")
     async def mmr(self,ctx,target=None):
         sql_scholar_data=""
 

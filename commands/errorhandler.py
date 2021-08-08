@@ -40,6 +40,8 @@ class CommandErrorHandler(commands.Cog):
 
         elif isinstance(error, commands.CommandNotFound):
             await ctx.send("Command not found")
+        elif isinstance(error, commands.MissingPermissions):
+            await ctx.send("You don't have enough permission to execute this command")
         else:
             print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)

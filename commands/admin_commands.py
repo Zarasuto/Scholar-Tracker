@@ -13,7 +13,7 @@ class AdminCommands(commands.Cog):
         self.client=client
 
     @commands.command(brief= "Add Scholars")
-    @commands.has_permissions(administrator=True)
+    @commands.has_guild_permissions(administrator=True)
     async def add_scholar(self,ctx,mention,address,cut):
         try:
             user = await self.client.fetch_user(int(slice_mention(mention)))
@@ -28,7 +28,7 @@ class AdminCommands(commands.Cog):
             await ctx.send("Incorrect input")
   
     @commands.command(brief = "Shows the data of a scholar either by a mention or via an address")
-    @commands.has_permissions(administrator=True)
+    @commands.has_guild_permissions(administrator=True)
     async def scholar_data(self,ctx,target):
         temp=target
         try:

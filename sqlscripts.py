@@ -1,6 +1,23 @@
 import sqlite3
 from utility.checkaddress import is_valid_address
 database = 'scholars.db'
+try:
+        
+    conn = sqlite3.connect(database)
+    c = conn.cursor()
+    c.execute(
+        '''
+        CREATE TABLE scholars(
+            name TEXT,
+            address TEXT,
+            cut REAL
+        )
+        '''
+    )
+    conn.commit()
+    conn.close()
+except Exception:
+    pass
 
 class QueryError(Exception):
     pass

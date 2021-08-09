@@ -3,6 +3,8 @@ import discord
 import os
 from discord.ext import commands
 
+API_KEY = os.getenv('API_KEY')
+
 client = commands.Bot(command_prefix = '?')
 
 @client.event
@@ -17,4 +19,4 @@ for filename in os.listdir('./commands'):
     if(filename.endswith('.py')):
         client.load_extension(f'commands.{filename[:-3]}')
 
-client.run("ODcyMTk4MDY4MjkwODc5NTU4.YQmXwA.q5ckFJLRLRKWIB2EHNkOdLeWDsI")
+client.run(API_KEY)

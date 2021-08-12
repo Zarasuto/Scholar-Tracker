@@ -1,11 +1,13 @@
 from requests.exceptions import ConnectionError
+from discord.ext import commands
+from datetime import datetime
 from utility.checkaddress import is_valid_address
 from utility.getSLPPrice import get_slp_data
+from utility.getmmrs import get_scholar_mmrs
+from utility.getslps import get_scholar_slp
 import sqlscripts
 import scholar_data
 import discord
-from discord.ext import commands
-from datetime import datetime
 
 
 class ScholarStatus(commands.Cog):
@@ -75,6 +77,60 @@ class ScholarStatus(commands.Cog):
         embeds.add_field(name = "MMR ", value = str(data["mmr"]), inline=True)
         embeds.add_field(name = "Rank ", value = str(data["rank"]), inline=True)
 
+        await ctx.send(embed=embeds)
+
+    @commands.command()
+    @commands.cooldown(1,30,type= commands.BucketType.default)
+    async def top_mmr(self,ctx):
+        list =  get_scholar_mmrs()
+        list.sort(key=lambda x: x[1],reverse=True)
+
+        embeds = discord.Embed(
+            title = "Top MMR player"
+        )
+        count = 1
+        for item in list:
+            embeds.add_field(name = "Rank" , value = count , inline=True)
+            embeds.add_field(name = "Name" , value = item[0] , inline=True)
+            embeds.add_field(name = "MMR" , value = item[1] , inline=True)
+            count+=1
+
+        await ctx.send(embed=embeds)
+            
+    @commands.command()
+    @commands.cooldown(1,30,type= commands.BucketType.default)
+    async def top_slp(self,ctx):
+        list =  get_scholar_slp()
+        list.sort(key=lambda x: x[1],reverse=True)
+
+        embeds = discord.Embed(
+            title = "Top SLP gained"
+        )
+        count = 1
+        for item in list:
+            embeds.add_field(name = "Rank" , value = count , inline=True)
+            embeds.add_field(name = "Name" , value = item[0] , inline=True)
+            embeds.add_field(name = "SLP" , value = item[1] , inline=True)
+            count+=1
+
+        await ctx.send(embed=embeds)
+
+    @commands.command()
+    @commands.cooldown(1,30,type= commands.BucketType.default)
+    async def pool(self,ctx):
+        scholars = sqlscripts.get_all_scholar_data()
+        data = [item[1] for item in scholars]
+        scholar_list = [scholar_data.getdata(name)['in_game_slp'] for name in data]
+        x = 0
+        for slp in scholar_list:
+            x  +=slp*.05
+
+        embeds = discord.Embed(
+            title = "Today's prize pool"
+        )
+        embeds.add_field(name = "SLP" , value = x , inline=False)
+        embeds.add_field(name = "PHP" , value = "₱"+str(x*get_slp_data()["smooth-love-potion"]['php']),inline=True)
+        embeds.add_field(name = "USD" , value = "$"+str(x*get_slp_data()["smooth-love-potion"]['usd']),inline=True)
         await ctx.send(embed=embeds)
 
 def setup(client):

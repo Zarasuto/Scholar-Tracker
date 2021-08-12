@@ -42,6 +42,8 @@ class CommandErrorHandler(commands.Cog):
             await ctx.send("Command not found")
         elif isinstance(error, commands.MissingPermissions):
             await ctx.send("You don't have enough permission to execute this command")
+        elif isinstance(error, commands.CommandOnCooldown):
+            await ctx.send('This command is on a %.2fs cooldown' % error.retry_after)
         else:
             print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)

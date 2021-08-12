@@ -8,5 +8,5 @@ FEATURES
 - Shows Earning of the scholar
 - Shows ranking for the slp gain
 - Shows ranking for the mmr
-- Get the current prize pool of the scholars
+- Get the current price of SLP
 - shows the prize pool of the scholar (5% of all scholar earnings)

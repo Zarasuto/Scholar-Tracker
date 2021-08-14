@@ -94,12 +94,12 @@ class ScholarStatus(commands.Cog):
             for item in list:
                 embeds.add_field(name = "Rank" , value = count , inline=True)
                 embeds.add_field(name = "Name" , value = item[0] , inline=True)
-            embeds.add_field(name = "MMR" , value = item[1] , inline=True)
-            count+=1
+                embeds.add_field(name = "MMR" , value = item[1] , inline=True)
+                count+=1
 
             await ctx.send(embed=embeds)
         except Exception:
-            pass
+            traceback.print_exc()
             
     @commands.command()
     @commands.cooldown(1,30,type= commands.BucketType.default)

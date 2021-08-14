@@ -1,4 +1,5 @@
 import sqlite3
+import traceback
 from utility.checkaddress import is_valid_address
 database = 'scholars.db'
 try:

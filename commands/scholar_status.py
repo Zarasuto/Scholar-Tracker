@@ -1,3 +1,4 @@
+import traceback
 from requests.exceptions import ConnectionError
 from discord.ext import commands
 from datetime import datetime
@@ -82,56 +83,65 @@ class ScholarStatus(commands.Cog):
     @commands.command()
     @commands.cooldown(1,30,type= commands.BucketType.default)
     async def top_mmr(self,ctx):
-        list =  get_scholar_mmrs()
-        list.sort(key=lambda x: x[1],reverse=True)
+        try:
+            list =  get_scholar_mmrs()
+            list.sort(key=lambda x: x[1],reverse=True)
 
-        embeds = discord.Embed(
-            title = "Top MMR player"
-        )
-        count = 1
-        for item in list:
-            embeds.add_field(name = "Rank" , value = count , inline=True)
-            embeds.add_field(name = "Name" , value = item[0] , inline=True)
+            embeds = discord.Embed(
+                title = "Top MMR player"
+            )
+            count = 1
+            for item in list:
+                embeds.add_field(name = "Rank" , value = count , inline=True)
+                embeds.add_field(name = "Name" , value = item[0] , inline=True)
             embeds.add_field(name = "MMR" , value = item[1] , inline=True)
             count+=1
 
-        await ctx.send(embed=embeds)
+            await ctx.send(embed=embeds)
+        except Exception:
+            pass
             
     @commands.command()
     @commands.cooldown(1,30,type= commands.BucketType.default)
     async def top_slp(self,ctx):
-        list =  get_scholar_slp()
-        list.sort(key=lambda x: x[1],reverse=True)
+        try:
+            list =  get_scholar_slp()
+            list.sort(key=lambda x: x[1],reverse=True)
 
-        embeds = discord.Embed(
-            title = "Top SLP gained"
-        )
-        count = 1
-        for item in list:
-            embeds.add_field(name = "Rank" , value = count , inline=True)
-            embeds.add_field(name = "Name" , value = item[0] , inline=True)
-            embeds.add_field(name = "SLP" , value = item[1] , inline=True)
-            count+=1
+            embeds = discord.Embed(
+                title = "Top SLP gained"
+            )
+            count = 1
+            for item in list:
+                embeds.add_field(name = "Rank" , value = count , inline=True)
+                embeds.add_field(name = "Name" , value = item[0] , inline=True)
+                embeds.add_field(name = "SLP" , value = item[1] , inline=True)
+                count+=1
 
-        await ctx.send(embed=embeds)
+            await ctx.send(embed=embeds)
+        except Exception:
+            traceback.print_exc()
 
     @commands.command()
     @commands.cooldown(1,30,type= commands.BucketType.default)
     async def pool(self,ctx):
-        scholars = sqlscripts.get_all_scholar_data()
-        data = [item[1] for item in scholars]
-        scholar_list = [scholar_data.getdata(name)['in_game_slp'] for name in data]
-        x = 0
-        for slp in scholar_list:
-            x  +=slp*.05
+        try:
+            scholars = sqlscripts.get_all_scholar_data()
+            data = [item[1] for item in scholars]
+            scholar_list = [scholar_data.getdata(name)['in_game_slp'] for name in data]
+            x = 0
+            for slp in scholar_list:
+                x  +=slp*.05
 
-        embeds = discord.Embed(
-            title = "Today's prize pool"
-        )
-        embeds.add_field(name = "SLP" , value = x , inline=False)
-        embeds.add_field(name = "PHP" , value = "₱"+str(x*get_slp_data()["smooth-love-potion"]['php']),inline=True)
-        embeds.add_field(name = "USD" , value = "$"+str(x*get_slp_data()["smooth-love-potion"]['usd']),inline=True)
-        await ctx.send(embed=embeds)
+            embeds = discord.Embed(
+                title = "Today's prize pool"
+            )
+            embeds.add_field(name = "SLP" , value = x , inline=False)
+            embeds.add_field(name = "PHP" , value = "₱"+str(x*get_slp_data()["smooth-love-potion"]['php']),inline=True)
+            embeds.add_field(name = "USD" , value = "$"+str(x*get_slp_data()["smooth-love-potion"]['usd']),inline=True)
+            await ctx.send(embed=embeds)
+        except Exception:
+            traceback.print_exc()
 
 def setup(client):
     client.add_cog(ScholarStatus(client))

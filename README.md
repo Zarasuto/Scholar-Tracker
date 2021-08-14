@@ -13,6 +13,6 @@ FEATURES
 
 HOW TO INSTALL
 
-Create a ".env" file and put your API key there
-(MUST HAVE PYTHON WITH PIP INSTALLED) run pip install <the requirements.txt>
-run bot.py
+-Create a ".env" file and put your API key there
+-(MUST HAVE PYTHON WITH PIP INSTALLED) run pip install <the requirements.txt>
+-run bot.py

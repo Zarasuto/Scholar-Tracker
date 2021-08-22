@@ -91,7 +91,7 @@ class ScholarStatus(commands.Cog):
                 title = "Top MMR player"
             )
             count = 1
-            for item in list:
+            for item in list[:8]:
                 embeds.add_field(name = "Rank" , value = count , inline=True)
                 embeds.add_field(name = "Name" , value = item[0] , inline=True)
                 embeds.add_field(name = "MMR" , value = item[1] , inline=True)
@@ -112,7 +112,7 @@ class ScholarStatus(commands.Cog):
                 title = "Top SLP gained"
             )
             count = 1
-            for item in list:
+            for item in list[:8]:
                 embeds.add_field(name = "Rank" , value = count , inline=True)
                 embeds.add_field(name = "Name" , value = item[0] , inline=True)
                 embeds.add_field(name = "SLP" , value = item[1] , inline=True)

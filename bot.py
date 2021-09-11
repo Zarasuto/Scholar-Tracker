@@ -16,6 +16,13 @@ async def on_ready():
 @client.command()
 async def ping(ctx):
     await ctx.send(f"Ping : {round(client.latency * 1000)}ms ")
+@client.command()
+async def reload(ctx):
+    for filename in os.listdir('./commands'):
+        if(filename.endswith('.py')):
+            client.unload_extension(f'commands.{filename[:-3]}')
+            client.load_extension(f'commands.{filename[:-3]}')
+    await ctx.send("Reloaded")
 
 for filename in os.listdir('./commands'):
     if(filename.endswith('.py')):

@@ -25,23 +25,23 @@ class ScholarStatus(commands.Cog):
             return
 
         try:
-            data = scholar_data.getdata(sql_scholar_data[0][1])
+            data = scholar_data.get_slp_data(sql_scholar_data[0][1])
         except ConnectionError:
             await ctx.send("Cannot Connect to the API")
             return
 
-        dt_object = datetime.fromtimestamp(int(data["last_claim_timestamp"]))
+        dt_object = datetime.fromtimestamp(int(data["earnings"]["last_claimed"]))
 
         embeds = discord.Embed(
             title = str(sql_scholar_data[0][0])+ " Information",
             description = str(sql_scholar_data[0][1])
         )
-        embeds.add_field(name="Earned SLP",value = str(data["in_game_slp"]*sql_scholar_data[0][2])+" SLP", inline=False)
-        embeds.add_field(name="Total SLP", value = str(data["in_game_slp"])+" SLP",inline= True)
+        embeds.add_field(name="Earned SLP",value = str(data["earnings"]["slp_inventory"]*sql_scholar_data[0][2])+" SLP", inline=False)
+        embeds.add_field(name="Total SLP", value = str(data["earnings"]["slp_inventory"])+" SLP",inline= True)
         embeds.add_field(name="Cut", value = str(sql_scholar_data[0][2]*100)+"%",inline= True)
         embeds.add_field(name = chr(173), value = chr(173))
-        embeds.add_field(name="PHP",value = "₱"+str(data["in_game_slp"]*get_slp_data()["smooth-love-potion"]['php']*sql_scholar_data[0][2]), inline=True)
-        embeds.add_field(name="USD",value = "$"+str(data["in_game_slp"]*get_slp_data()["smooth-love-potion"]['usd']*sql_scholar_data[0][2]), inline=True)
+        embeds.add_field(name="PHP",value = "₱"+str(data["earnings"]["slp_inventory"]*get_slp_data()["smooth-love-potion"]['php']*sql_scholar_data[0][2]), inline=True)
+        embeds.add_field(name="USD",value = "$"+str(data["earnings"]["slp_inventory"]*get_slp_data()["smooth-love-potion"]['usd']*sql_scholar_data[0][2]), inline=True)
         embeds.add_field(name="Last claimed SLP",value = dt_object.strftime("%x"), inline=False)
         
         await ctx.send(embed=embeds)
@@ -65,7 +65,7 @@ class ScholarStatus(commands.Cog):
             return
             
         try:
-            data = scholar_data.getdata(sql_scholar_data[0][1])
+            data = scholar_data.get_mmr_data(sql_scholar_data[0][1])
         except ConnectionError:
             await ctx.send("Cannot Connect to the API")
             return
@@ -75,8 +75,8 @@ class ScholarStatus(commands.Cog):
             description = str(sql_scholar_data[0][1])
         )
 
-        embeds.add_field(name = "MMR ", value = str(data["mmr"]), inline=True)
-        embeds.add_field(name = "Rank ", value = str(data["rank"]), inline=True)
+        embeds.add_field(name = "MMR ", value = str(data["stats"]["elo"]), inline=True)
+        embeds.add_field(name = "Rank ", value = str(data["stats"]["rank"]), inline=True)
 
         await ctx.send(embed=embeds)
 
@@ -128,7 +128,7 @@ class ScholarStatus(commands.Cog):
         try:
             scholars = sqlscripts.get_all_scholar_data()
             data = [item[1] for item in scholars]
-            scholar_list = [scholar_data.getdata(name)['in_game_slp'] for name in data]
+            scholar_list = [scholar_data.get_slp_data(address)['slp_inventory'] for address in data]
             x = 0
             for slp in scholar_list:
                 x  +=slp*.05
